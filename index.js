@@ -1,5 +1,9 @@
 const cardContainer = document.querySelector('.card-container');
+let cards = [];
 
+let isFlipped = false;
+let flippedCard = null;
+let flippedCardID = null;
 const core = ['red', 'red', 'green', 'green', 'orange', 'orange', 'blue', 'blue'];
 shuffle(core);
 
@@ -12,7 +16,7 @@ function shuffle(array) {
   return array;
 }
 
-function createCardElement(num) {
+function createCardElement(id) {
   const card = document.createElement('div');
   card.classList.add('card');
 
@@ -20,7 +24,7 @@ function createCardElement(num) {
   cardFront.classList.add('card-front');
 
   const frontText = document.createElement('p');
-  frontText.textContent = String(num);
+  frontText.textContent = String(id);
   cardFront.append(frontText);
 
   const cardBack = document.createElement('div');
@@ -35,20 +39,48 @@ function createCardElement(num) {
   return card;
 }
 
-const initCards = () => {
-  core.forEach((num) => {
-    console.log('Current core num: ', num);
+const resetFlipped = () => {
+  isFlipped = false;
+  flippedCardID = null;
+  flippedCard = null;
+  cardContainer.classList.add('is-locked');
+  setTimeout(() => {
+    cards.forEach((card) => {
+      if (!card.classList.contains('finalized')) {
+        card.classList.remove('flipped');
+      }
+      cardContainer.classList.remove('is-locked');
+    });
+  }, 1000);
+};
 
-    const newCard = createCardElement(num);
-    console.log('New card: ', newCard);
+const initCards = () => {
+  core.forEach((id) => {
+    const newCard = createCardElement(id);
     cardContainer.appendChild(newCard);
 
     newCard.addEventListener('click', () => {
-      // cardContainer.querySelectorAll('.card-front').forEach((card) => {
-      //   card.classList.remove('flipped');
-      // });
-      newCard.classList.add('flipped');
+      if (!isFlipped) {
+        newCard.classList.add('flipped');
+        isFlipped = true;
+        flippedCardID = id;
+        flippedCard = newCard;
+        console.log('1st card flipped', flippedCardID);
+
+      }
+      else {
+        newCard.classList.add('flipped');
+        if (id === flippedCardID) {
+          newCard.classList.add('finalized');
+          flippedCard.classList.add('finalized');
+          resetFlipped();
+        }
+        else {
+          resetFlipped();
+        }
+      }
     });
+    cards.push(newCard);
   });
 };
 initCards();
