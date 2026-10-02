@@ -4,7 +4,10 @@ let cards = [];
 let isFlipped = false;
 let flippedCard = null;
 let flippedCardID = null;
+
 const core = ['red', 'red', 'green', 'green', 'orange', 'orange', 'blue', 'blue'];
+let remainingCards = core.length;
+
 shuffle(core);
 
 //fisher-yates shuffle
@@ -51,10 +54,15 @@ const resetFlipped = () => {
       }
       cardContainer.classList.remove('is-locked');
     });
+    if (remainingCards <= 0) {
+      alert('You win!');
+    }
   }, 1000);
 };
 
 const initCards = () => {
+  console.log('Cards remain: ', remainingCards);
+
   core.forEach((id) => {
     const newCard = createCardElement(id);
     cardContainer.appendChild(newCard);
@@ -65,7 +73,6 @@ const initCards = () => {
         isFlipped = true;
         flippedCardID = id;
         flippedCard = newCard;
-        console.log('1st card flipped', flippedCardID);
 
       }
       else {
@@ -73,6 +80,9 @@ const initCards = () => {
         if (id === flippedCardID) {
           newCard.classList.add('finalized');
           flippedCard.classList.add('finalized');
+          remainingCards = remainingCards - 2;
+          console.log('remaining cards: ', remainingCards);
+
           resetFlipped();
         }
         else {
