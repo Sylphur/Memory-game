@@ -1,53 +1,28 @@
+import * as utils from './utils.js';
+
 const cardContainer = document.querySelector('.card-container');
+
+const ngButton = document.querySelector('.ng-button');
+ngButton.addEventListener('click', resetGame);
+
 let cards = [];
 
 let isFlipped = false;
 let flippedCard = null;
 let flippedCardID = null;
+let activeTimeout = null;
 
 const core = ['red', 'red', 'green', 'green', 'orange', 'orange', 'blue', 'blue'];
 let remainingCards = core.length;
 
-shuffle(core);
-
-//fisher-yates shuffle
-function shuffle(array) {
-  for (let i = array.length - 1; i > 0; i--) {
-    let j = Math.floor(Math.random() * (i + 1));
-    [array[i], array[j]] = [array[j], array[i]];
-  }
-  return array;
-}
-
-function createCardElement(id) {
-  const card = document.createElement('div');
-  card.classList.add('card');
-
-  const cardFront = document.createElement('div');
-  cardFront.classList.add('card-front');
-
-  const frontText = document.createElement('p');
-  frontText.textContent = String(id);
-  cardFront.append(frontText);
-
-  const cardBack = document.createElement('div');
-  cardBack.classList.add('card-back');
-
-  const backText = document.createElement('p');
-  backText.textContent = 'X';
-  cardBack.append(backText);
-
-  card.append(cardFront, cardBack);
-
-  return card;
-}
+utils.shuffle(core);
 
 const resetFlipped = () => {
   isFlipped = false;
   flippedCardID = null;
   flippedCard = null;
   cardContainer.classList.add('is-locked');
-  setTimeout(() => {
+  activeTimeout = setTimeout(() => {
     cards.forEach((card) => {
       if (!card.classList.contains('finalized')) {
         card.classList.remove('flipped');
@@ -64,7 +39,7 @@ const initCards = () => {
   console.log('Cards remain: ', remainingCards);
 
   core.forEach((id) => {
-    const newCard = createCardElement(id);
+    const newCard = utils.createCardElement(id);
     cardContainer.appendChild(newCard);
 
     newCard.addEventListener('click', () => {
@@ -93,4 +68,18 @@ const initCards = () => {
     cards.push(newCard);
   });
 };
+
+function resetGame() {
+  isFlipped = false;
+  flippedCardID = null;
+  flippedCard = null;
+  remainingCards = core.length;
+  clearTimeout(activeTimeout);
+  cardContainer.classList.remove('is-locked');
+  cardContainer.replaceChildren();
+  utils.shuffle(core);
+  initCards();
+};
+
+//start game
 initCards();
