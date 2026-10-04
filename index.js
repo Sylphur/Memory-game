@@ -1,21 +1,35 @@
 import * as utils from './utils.js';
+import { createWinnerModal, createLeaderboardModal } from './modal.js';
 import { createLayout } from './layout.js';
 createLayout();
 
 const cardContainer = document.querySelector('.card-container');
+const timerCount = document.querySelector('.timer-count');
+const movesCount = document.querySelector('.moves-count');
 
 const ngButton = document.querySelector('.ng-button');
 ngButton.addEventListener('click', resetGame);
+const lbButton = document.querySelector('.lb-button');
+lbButton.addEventListener('click', () => {
+  const leaderboard = utils.getScore();
+  console.log('Found leaderboard: ', leaderboard);
+
+  createLeaderboardModal(leaderboard);
+});
 
 let cards = [];
-
 let isFlipped = false;
 let flippedCard = null;
 let flippedCardID = null;
-let activeTimeout = null;
-let moves = 0;
 
-const core = ['red', 'red', 'green', 'green', 'orange', 'orange', 'blue', 'blue', 'cyan', 'cyan'];
+let activeTimeout = null;
+let activeTimer = null;
+
+let moves = 0;
+let gameSeconds = 0;
+
+// const core = ['red', 'red', 'green', 'green', 'orange', 'orange', 'blue', 'blue', 'cyan', 'cyan'];
+const core = ['red', 'red', 'green', 'green'];
 let remainingCards = core.length;
 
 utils.shuffle(core);
@@ -32,9 +46,6 @@ const resetFlipped = () => {
       }
       cardContainer.classList.remove('is-locked');
     });
-    if (remainingCards <= 0) {
-      alert('You win! Moves: ' + moves);
-    }
   }, 1000);
 };
 
@@ -56,13 +67,15 @@ const initCards = () => {
       else {
         newCard.classList.add('flipped');
         moves++;
+        movesCount.textContent = moves;
         if (id === flippedCardID) {
           newCard.classList.add('finalized');
           flippedCard.classList.add('finalized');
           remainingCards = remainingCards - 2;
           console.log('remaining cards: ', remainingCards);
-
-          resetFlipped();
+          // FINISH CAN BE CALLED FROM HERE
+          if (remainingCards <= 0) finishGame();
+          else resetFlipped();
         }
         else {
           resetFlipped();
@@ -71,18 +84,45 @@ const initCards = () => {
     });
     cards.push(newCard);
   });
+  startTimer();
 };
 
 function resetGame() {
   isFlipped = false;
   flippedCardID = null;
   flippedCard = null;
+  moves = 0;
+  movesCount.textContent = moves;
   remainingCards = core.length;
   clearTimeout(activeTimeout);
   cardContainer.classList.remove('is-locked');
   cardContainer.replaceChildren();
   utils.shuffle(core);
   initCards();
+};
+
+const finishGame = () => {
+  stopTimer();
+  utils.saveScore(moves, gameSeconds);
+  createWinnerModal(moves, utils.formatTime(gameSeconds), resetGame);
+};
+
+const stopTimer = () => {
+  if (activeTimer) {
+    clearTimeout(activeTimer);
+  }
+  activeTimer = null;
+};
+
+const startTimer = () => {
+  stopTimer();
+  gameSeconds = 0;
+  timerCount.textContent = '0:00';
+
+  activeTimer = setInterval(() => {
+    gameSeconds++;
+    timerCount.textContent = utils.formatTime(gameSeconds);
+  }, 1000);
 };
 
 //start game

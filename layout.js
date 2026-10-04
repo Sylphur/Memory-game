@@ -1,12 +1,12 @@
 const body = document.querySelector('body');
-console.log(body);
-
 
 export const createLayout = () => {
   const layout = document.createElement('div');
   layout.classList.add('container');
+
   const header = createHeader();
   const main = createMain();
+
   layout.appendChild(header);
   layout.appendChild(main);
   body.appendChild(layout);
@@ -46,7 +46,6 @@ const createHeader = () => {
   movesCount.textContent = '0';
   scoreContainer.appendChild(movesCount);
 
-
   header.appendChild(titleElement);
   header.appendChild(ngButton);
   header.appendChild(leaderboardButton);
@@ -66,5 +65,6 @@ const createMain = () => {
 
   main.appendChild(mainP);
   main.appendChild(cardContainer);
+
   return main;
 };

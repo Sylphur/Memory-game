@@ -29,3 +29,40 @@ export const createCardElement = (id) => {
 
   return card;
 }
+
+export const formatTime = (seconds) => {
+  const minutes = Math.floor(seconds / 60);
+  const remainingSeconds = seconds % 60;
+  return `${minutes}:${remainingSeconds < 10 ? '0' : ''}${remainingSeconds}`;
+}
+
+export const saveScore = (moves, seconds) => {
+  const rawData = localStorage.getItem('score');
+  let leaderboard = rawData ? JSON.parse(rawData) : [];
+  const now = new Date();
+
+  const newRecord = {
+    name: 'Anonymous',
+    moves: moves,
+    seconds: seconds,
+    date: now.toLocaleDateString('ru-RU')
+  };
+
+  leaderboard.push(newRecord);
+
+  leaderboard.sort((a, b) => {
+    if (a.seconds !== b.seconds) {
+      return a.moves - b.moves;
+    }
+    return a.seconds - b.seconds;
+  });
+
+  leaderboard = leaderboard.slice(0, 10);
+  localStorage.setItem('score', JSON.stringify(leaderboard));
+  return leaderboard;
+};
+
+export const getScore = () => {
+  const rawData = localStorage.getItem('score');
+  return rawData ? JSON.parse(rawData) : [];
+};
