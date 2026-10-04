@@ -1,4 +1,6 @@
 import * as utils from './utils.js';
+import { createLayout } from './layout.js';
+createLayout();
 
 const cardContainer = document.querySelector('.card-container');
 
@@ -11,8 +13,9 @@ let isFlipped = false;
 let flippedCard = null;
 let flippedCardID = null;
 let activeTimeout = null;
+let moves = 0;
 
-const core = ['red', 'red', 'green', 'green', 'orange', 'orange', 'blue', 'blue'];
+const core = ['red', 'red', 'green', 'green', 'orange', 'orange', 'blue', 'blue', 'cyan', 'cyan'];
 let remainingCards = core.length;
 
 utils.shuffle(core);
@@ -30,7 +33,7 @@ const resetFlipped = () => {
       cardContainer.classList.remove('is-locked');
     });
     if (remainingCards <= 0) {
-      alert('You win!');
+      alert('You win! Moves: ' + moves);
     }
   }, 1000);
 };
@@ -52,6 +55,7 @@ const initCards = () => {
       }
       else {
         newCard.classList.add('flipped');
+        moves++;
         if (id === flippedCardID) {
           newCard.classList.add('finalized');
           flippedCard.classList.add('finalized');
