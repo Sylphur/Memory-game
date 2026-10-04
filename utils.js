@@ -43,18 +43,19 @@ export const saveScore = (moves, seconds) => {
 
   const newRecord = {
     name: 'Anonymous',
-    moves: moves,
-    seconds: seconds,
+    moves: parseInt(moves, 10),
+    seconds: parseInt(seconds, 10),
+    timestamp: now.getTime(),
     date: now.toLocaleDateString('ru-RU')
   };
 
   leaderboard.push(newRecord);
 
   leaderboard.sort((a, b) => {
-    if (a.seconds !== b.seconds) {
+    if (a.moves !== b.moves) {
       return a.moves - b.moves;
     }
-    return a.seconds - b.seconds;
+    return a.timestamp - b.timestamp;
   });
 
   leaderboard = leaderboard.slice(0, 10);

@@ -27,6 +27,10 @@ const createHeader = () => {
   leaderboardButton.classList.add('lb-button');
   leaderboardButton.textContent = 'Leaderboard';
 
+  const emButton = document.createElement('button');
+  emButton.classList.add('em-button');
+  emButton.textContent = 'Easy mode';
+
   const scoreContainer = document.createElement('div');
   scoreContainer.classList.add('score-container');
   const timerLabel = document.createElement('span');
@@ -49,6 +53,7 @@ const createHeader = () => {
   header.appendChild(titleElement);
   header.appendChild(ngButton);
   header.appendChild(leaderboardButton);
+  header.appendChild(emButton);
   header.appendChild(scoreContainer);
 
   return header;

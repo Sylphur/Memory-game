@@ -53,6 +53,8 @@ export const createWinnerModal = (movesCount, timeCount, onNewGameClick) => {
 };
 
 export const createLeaderboardModal = (leaderboard) => {
+  console.log('taken lb: ', leaderboard);
+
   const wrapper = document.createElement('div');
   wrapper.classList.add('modal-wrapper');
   const titleElement = document.createElement('h2');
@@ -63,6 +65,7 @@ export const createLeaderboardModal = (leaderboard) => {
     const noScores = document.createElement('p');
     noScores.textContent = 'No scores yet';
     wrapper.append(noScores);
+    openModal(wrapper);
   }
   else {
     const table = document.createElement('table');
