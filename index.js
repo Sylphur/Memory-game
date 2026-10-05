@@ -82,7 +82,6 @@ const initCards = () => {
           flippedCard.classList.add('finalized');
           remainingCards = remainingCards - 2;
           console.log('remaining cards: ', remainingCards);
-          // FINISH CAN BE CALLED FROM HERE
           if (remainingCards <= 0) finishGame();
           else resetFlipped();
         }

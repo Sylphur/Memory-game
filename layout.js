@@ -63,7 +63,7 @@ const createMain = () => {
   main.classList.add('main');
   const mainP = document.createElement('p');
   mainP.classList.add('main-p');
-  mainP.textContent = 'Click on the cards to flip them over and try to remember the color.';
+  mainP.textContent = 'Click on the cards to flip them over and try to remember the "color".';
   const cardContainer = document.createElement('div');
   cardContainer.classList.add('card-container');
 

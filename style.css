@@ -90,6 +90,11 @@ body > * {
 .flipped, .finalized {
   pointer-events: none;
 }
+.finalized,
+.finalized .card-front,
+.finalized .card-front p {
+  background-color: #dddbdb;
+}
 .is-locked .card{
   border: 1px solid #8e8b8b;
   color: #8e8b8b;
