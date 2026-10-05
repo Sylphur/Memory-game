@@ -19,17 +19,18 @@ const createHeader = () => {
   const titleElement = document.createElement('h1');
   titleElement.textContent = 'Memory Game';
 
+  const buttonsWrapper = document.createElement('div');
+  buttonsWrapper.classList.add('buttons-wrapper');
   const ngButton = document.createElement('button');
   ngButton.classList.add('ng-button');
   ngButton.textContent = 'New game';
-
   const leaderboardButton = document.createElement('button');
   leaderboardButton.classList.add('lb-button');
   leaderboardButton.textContent = 'Leaderboard';
-
   const emButton = document.createElement('button');
   emButton.classList.add('em-button');
   emButton.textContent = 'Easy mode';
+  buttonsWrapper.append(ngButton, leaderboardButton, emButton);
 
   const scoreContainer = document.createElement('div');
   scoreContainer.classList.add('score-container');
@@ -51,9 +52,7 @@ const createHeader = () => {
   scoreContainer.appendChild(movesCount);
 
   header.appendChild(titleElement);
-  header.appendChild(ngButton);
-  header.appendChild(leaderboardButton);
-  header.appendChild(emButton);
+  header.appendChild(buttonsWrapper);
   header.appendChild(scoreContainer);
 
   return header;

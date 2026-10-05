@@ -32,7 +32,7 @@ export const createWinnerModal = (movesCount, timeCount, onNewGameClick) => {
   stats.textContent = `You won! Moves: ${movesCount}, Time: ${timeCount}`;
 
   const btnWrapper = document.createElement('div');
-  btnWrapper.classList.add('btn-wrapper');
+  btnWrapper.classList.add('buttons-wrapper');
 
   const newGameBtn = document.createElement('button');
   newGameBtn.textContent = 'New game';
@@ -97,12 +97,15 @@ export const createLeaderboardModal = (leaderboard) => {
     });
     table.appendChild(tbody);
 
+    const btnWrapper = document.createElement('div');
+    btnWrapper.classList.add('buttons-wrapper');
     const closeBtn = document.createElement('button');
     closeBtn.textContent = 'Close';
     closeBtn.addEventListener('click', () => {
       closeModal();
     });
-    wrapper.append(table, closeBtn);
+    btnWrapper.append(closeBtn);
+    wrapper.append(table, btnWrapper);
 
     openModal(wrapper);
   };
