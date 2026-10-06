@@ -50,6 +50,22 @@ const createHeader = () => {
   movesCount.classList.add('moves-count');
   movesCount.textContent = '0';
   scoreContainer.appendChild(movesCount);
+  const pairsLabel = document.createElement('span');
+  pairsLabel.classList.add('pairs-label');
+  pairsLabel.textContent = 'Pairs: ';
+  scoreContainer.appendChild(pairsLabel);
+  const pairsCount = document.createElement('span');
+  pairsCount.classList.add('pairs-count');
+  pairsCount.textContent = '0';
+  scoreContainer.appendChild(pairsCount);
+  const slashLabel = document.createElement('span');
+  slashLabel.classList.add('slash-label');
+  slashLabel.textContent = '/';
+  scoreContainer.appendChild(slashLabel);
+  const pairsMax = document.createElement('span');
+  pairsMax.classList.add('pairs-max');
+  pairsMax.textContent = '0';
+  scoreContainer.appendChild(pairsMax);
 
   header.appendChild(titleElement);
   header.appendChild(buttonsWrapper);

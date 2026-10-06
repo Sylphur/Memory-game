@@ -6,6 +6,8 @@ createLayout();
 const cardContainer = document.querySelector('.card-container');
 const timerCount = document.querySelector('.timer-count');
 const movesCount = document.querySelector('.moves-count');
+const pairsCount = document.querySelector('.pairs-count');
+const pairsMax = document.querySelector('.pairs-max');
 
 let easyMode = false;
 let cards = [];
@@ -18,6 +20,8 @@ let activeTimer = null;
 
 let moves = 0;
 let gameSeconds = 0;
+let pairs = 0;
+let pairsMaxValue = 0;
 
 const ngButton = document.querySelector('.ng-button');
 ngButton.addEventListener('click', resetGame);
@@ -61,6 +65,11 @@ const initCards = () => {
   utils.shuffle(core);
   console.log('Cards remain: ', remainingCards);
 
+  pairsMaxValue = core.length / 2;
+  pairsMax.textContent = pairsMaxValue;
+  pairsCount.textContent = pairs;
+  pairs = 0;
+
   core.forEach((id) => {
     const newCard = utils.createCardElement(id);
     cardContainer.appendChild(newCard);
@@ -82,6 +91,8 @@ const initCards = () => {
           flippedCard.classList.add('finalized');
           remainingCards = remainingCards - 2;
           console.log('remaining cards: ', remainingCards);
+          pairs++;
+          pairsCount.textContent = pairs;
           if (remainingCards <= 0) finishGame();
           else resetFlipped();
         }
@@ -102,6 +113,8 @@ function resetGame() {
   moves = 0;
   movesCount.textContent = moves;
   remainingCards = core.length;
+  pairs = 0;
+  pairsCount.textContent = pairs;
   clearTimeout(activeTimeout);
   cardContainer.classList.remove('is-locked');
   cardContainer.replaceChildren();
